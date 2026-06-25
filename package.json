@@ -1,0 +1,9 @@
+{
+  "name": "grammar-atlas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Diagnostic interactif de grammaire anglaise pour la préparation IELTS",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
