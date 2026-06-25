@@ -2,7 +2,7 @@ window.GRAMMAR_CATEGORIES = [
   { id: 'nouns', name: 'Noms', short: 'Nom', color: '#ff6b4a', index: '01', description: 'Dénombrables, indénombrables, pluriels et possessifs.', skills: ['countability', 'plurals', 'possessives'] },
   { id: 'pronouns', name: 'Pronoms', short: 'Pronom', color: '#8b6cff', index: '02', description: 'Référence, accord, relatifs et réfléchis.', skills: ['reference', 'agreement', 'relative pronouns'] },
   { id: 'verbs', name: 'Verbes & temps', short: 'Verbe', color: '#e9ff70', index: '03', description: 'Temps, modaux, accord, voix et verbes irréguliers.', skills: ['tenses', 'modals', 'voice'] },
-  { id: 'sentence-parts', name: 'Parties de phrase', short: 'Fonction', color: '#60d6c5', index: '04', description: 'Sujets, prédicats et compléments directs ou indirects.', skills: ['subject', 'predicate', 'objects'] },
+  { id: 'sentence-parts', name: 'Structure utile', short: 'Structure', color: '#60d6c5', index: '04', description: 'Phrases complètes, accords, ordre naturel et fragments à éviter.', skills: ['fragments', 'agreement', 'word order'] },
   { id: 'adjectives', name: 'Adjectifs', short: 'Adjectif', color: '#ff9bc5', index: '05', description: 'Ordre, comparaison, participes et position.', skills: ['order', 'comparison', 'participles'] },
   { id: 'adverbs', name: 'Adverbes', short: 'Adverbe', color: '#ffc857', index: '06', description: 'Formation, placement, intensité et comparaison.', skills: ['formation', 'placement', 'degree'] },
   { id: 'prepositions', name: 'Prépositions', short: 'Préposition', color: '#5bb8ff', index: '07', description: 'Temps, lieu et associations idiomatiques.', skills: ['time', 'place', 'collocations'] },
@@ -107,34 +107,34 @@ window.GRAMMAR_QUESTIONS = [
   },
 
   {
-    id: 'sp1', category: 'sentence-parts', type: 'Identifie la fonction', errorType: 'Règle',
-    prompt: 'In “The new regulations affect small businesses”, what is “small businesses”?',
-    options: ['Subject', 'Direct object', 'Indirect object', 'Predicate adjective'], answer: 1,
-    rule: 'Complément d’objet direct', explanation: '“Small businesses” reçoit directement l’action du verbe “affect” : c’est le complément d’objet direct.'
+    id: 'sp1', category: 'sentence-parts', type: 'Complète la phrase', errorType: 'Structure',
+    prompt: 'Because public transport became cheaper, ___.',
+    options: ['more commuters used it', 'using it more commuters', 'which more commuters used', 'and more commuters'], answer: 0,
+    rule: 'Phrase complète', explanation: 'Après “because”, il faut terminer avec une proposition complète : sujet + verbe + idée claire.'
   },
   {
-    id: 'sp2', category: 'sentence-parts', type: 'Identifie le sujet', errorType: 'Structure',
-    prompt: 'What is the complete subject in “A sharp decline in exports was recorded”?',
-    options: ['decline', 'exports', 'A sharp decline in exports', 'was recorded'], answer: 2,
-    rule: 'Sujet complet', explanation: 'Le sujet complet inclut le noyau “decline” et tous ses modifieurs : “A sharp decline in exports”.'
+    id: 'sp2', category: 'sentence-parts', type: 'Corrige la phrase', errorType: 'Structure',
+    prompt: 'Choose the best correction: “The rise in housing costs affecting young workers.”',
+    options: ['The rise in housing costs affecting young workers.', 'The rise in housing costs is affecting young workers.', 'The rise in housing costs it affecting young workers.', 'The rise in housing costs to affect young workers.'], answer: 1,
+    rule: 'Verbe conjugué nécessaire', explanation: 'La phrase originale n’a pas de verbe conjugué principal. “Is affecting” donne une phrase complète.'
   },
   {
-    id: 'sp3', category: 'sentence-parts', type: 'Trouve l’objet indirect', errorType: 'Règle',
-    prompt: 'In “The tutor gave the candidates useful feedback”, what is the indirect object?',
-    options: ['The tutor', 'the candidates', 'useful feedback', 'gave'], answer: 1,
-    rule: 'Complément d’objet indirect', explanation: '“Useful feedback” est ce qui est donné ; “the candidates” désigne les destinataires et constitue l’objet indirect.'
+    id: 'sp3', category: 'sentence-parts', type: 'Corrige l’ordre des mots', errorType: 'Ordre',
+    prompt: 'Choose the most natural correction: “The scheme has improved significantly access to healthcare.”',
+    options: ['The scheme significantly has improved access to healthcare.', 'The scheme has improved significantly access to healthcare.', 'The scheme has significantly improved access to healthcare.', 'The scheme has improved access significantly to healthcare.'], answer: 2,
+    rule: 'Ordre naturel du groupe verbal', explanation: 'Avec “has + participe passé”, un adverbe comme “significantly” se place souvent entre l’auxiliaire et le verbe principal.'
   },
   {
-    id: 'sp4', category: 'sentence-parts', type: 'Repère le prédicat', errorType: 'Structure',
-    prompt: 'What is the complete predicate in “Several coastal towns are facing severe erosion”?',
-    options: ['Several coastal towns', 'coastal towns', 'are facing severe erosion', 'severe erosion'], answer: 2,
-    rule: 'Prédicat complet', explanation: 'Le prédicat dit ce que fait ou subit le sujet : “are facing severe erosion”.'
+    id: 'sp4', category: 'sentence-parts', type: 'Choisis l’accord', errorType: 'Accord',
+    prompt: 'The impact of these measures ___ still unclear.',
+    options: ['are', 'is', 'were', 'have been'], answer: 1,
+    rule: 'Accord avec le noyau du groupe nominal', explanation: 'Le mot principal est “impact”, singulier. “Of these measures” ne change pas l’accord.'
   },
   {
-    id: 'sp5', category: 'sentence-parts', type: 'Sujet implicite', errorType: 'Règle',
-    prompt: 'What is the implied subject in “Consider the long-term consequences.”?',
-    options: ['I', 'The consequences', 'You', 'They'], answer: 2,
-    rule: 'Impératif et sujet implicite', explanation: 'À l’impératif, le sujet “you” est compris mais généralement non exprimé.'
+    id: 'sp5', category: 'sentence-parts', type: 'Évite le fragment', errorType: 'Structure',
+    prompt: 'Choose the complete sentence.',
+    options: ['Although the survey was limited.', 'While the policy remained unpopular.', 'Because the evidence was incomplete.', 'Although the survey was limited, the results were useful.'], answer: 3,
+    rule: 'Proposition dépendante', explanation: '“Although”, “while” et “because” créent une dépendance. Il faut ajouter une proposition principale pour finir la phrase.'
   },
 
   {

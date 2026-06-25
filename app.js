@@ -1,11 +1,14 @@
 (function () {
   const categories = window.GRAMMAR_CATEGORIES;
   const questions = window.GRAMMAR_QUESTIONS;
+  const generatedQuestions = window.GRAMMAR_GENERATED_QUESTIONS || [];
   const knownProfile = window.GRAMMAR_KNOWN_PROFILE || {};
   const coachLessons = window.GRAMMAR_COACH_LESSONS || {};
   const app = document.getElementById('app');
   const liveRegion = document.getElementById('live-region');
   const storageKey = 'grammar-atlas-progress-v2';
+  const categoryQuizSize = 10;
+  const bankDrillSize = 25;
 
   const state = {
     screen: 'home',
@@ -159,12 +162,13 @@
             <button class="button button--primary" type="button" data-action="open-coach">
               Ouvrir mon plan 24 h ${icon('arrow')}
             </button>
+            <button class="button button--secondary" type="button" data-action="start-bank">Drill 25 phrases IELTS</button>
             <button class="button button--secondary" type="button" data-action="open-lesson" data-category="${firstPriority.id}">Ma première leçon · 12 min</button>
           </div>
           <ul class="hero-meta" aria-label="Caractéristiques du plan">
             <li>${icon('clock', 18)} 2 h 15 ciblées</li>
             <li>${icon('target', 18)} 3 priorités</li>
-            <li>${icon('book', 18)} Règle → exemple → drill</li>
+            <li>${icon('book', 18)} ${questions.length} phrases en banque</li>
           </ul>
         </div>
         <div class="hero-visual" aria-hidden="true">
@@ -184,7 +188,7 @@
         <div class="coach-callout__copy">
           <p class="eyebrow">Plan personnalisé activé</p>
           <h2 id="coach-callout-title">Trois faiblesses. Une seule mission.</h2>
-          <p>${priorities.map((category) => `${category.name} (${category.score}%)`).join(' · ')}. On les travaille dans cet ordre, sans perdre de temps sur tes points déjà solides.</p>
+          <p>${priorities.map((category) => `${category.name} (${category.score}%)`).join(' · ')}. On les travaille dans cet ordre, avec ${generatedQuestions.length || 1000} phrases de correction/complétion, sans perdre de temps sur tes points déjà solides.</p>
         </div>
         <button class="button button--primary" type="button" data-action="start-adaptive">Lancer le drill ciblé ${icon('arrow')}</button>
       </section>
@@ -220,6 +224,7 @@
     const history = getCategoryHistory(category.id);
     const scoreLabel = history.score === null ? 'Non testé' : `${history.score}%`;
     const width = history.score === null ? 0 : history.score;
+    const drillCount = Math.min(categoryQuizSize, questions.filter((question) => question.category === category.id).length);
     return `
       <article class="topic-card" style="--topic:${category.color}">
         <div class="topic-top"><span class="topic-index">${category.index}</span><span class="topic-score">${scoreLabel}</span></div>
@@ -227,7 +232,7 @@
         <p>${category.description}</p>
         <div class="topic-bar" aria-label="Maîtrise : ${scoreLabel}"><span style="width:${width}%"></span></div>
         <button class="topic-action" type="button" data-action="start-category" data-category="${category.id}">
-          Tester ce point <span>5 questions</span> ${icon('chevron', 17)}
+          Tester ce point <span>${drillCount} phrases</span> ${icon('chevron', 17)}
         </button>
       </article>
     `;
@@ -359,7 +364,7 @@
         </section>
 
         <section class="lesson-cta">
-          <div><p class="eyebrow">Maintenant, on vérifie</p><h2>5 situations. Explication immédiate.</h2><p>Ne cherche pas à être rapide : applique consciemment le raccourci que tu viens de lire.</p></div>
+          <div><p class="eyebrow">Maintenant, on vérifie</p><h2>10 situations. Explication immédiate.</h2><p>Ne cherche pas à être rapide : applique consciemment le raccourci que tu viens de lire.</p></div>
           <button class="button button--primary" type="button" data-action="practice-lesson" data-category="${categoryId}">M’entraîner sur cette règle ${icon('arrow')}</button>
         </section>
       </div>
@@ -375,6 +380,18 @@
       return [...pool.filter((question) => wrongIds.has(question.id)), ...shuffle(pool.filter((question) => !wrongIds.has(question.id)))].slice(0, 4);
     });
     startQuiz('coach', 'Drill adaptatif · priorités 24 h', shuffle(selected));
+  }
+
+  function startBankDrill() {
+    const priorityIds = getPriorityCategories(6, false).map((category) => category.id);
+    const priorityPool = shuffle(questions.filter((question) => priorityIds.includes(question.category)));
+    const supportPool = shuffle(questions.filter((question) => !priorityIds.includes(question.category)));
+    const priorityCount = Math.ceil(bankDrillSize * 0.76);
+    const selected = [
+      ...priorityPool.slice(0, priorityCount),
+      ...supportPool.slice(0, bankDrillSize - priorityCount)
+    ];
+    startQuiz('bank', 'Drill IELTS · 25 phrases', shuffle(selected));
   }
 
   function practiceLesson(categoryId) {
@@ -395,7 +412,7 @@
 
   function startCategory(categoryId) {
     const category = categoryById(categoryId);
-    const selected = shuffle(questions.filter((question) => question.category === categoryId));
+    const selected = shuffle(questions.filter((question) => question.category === categoryId)).slice(0, categoryQuizSize);
     startQuiz('category', `Focus · ${category.name}`, selected);
   }
 
@@ -406,7 +423,7 @@
       const weakest = getLowestCategory(state.result);
       selected = questions.filter((question) => question.category === weakest.id);
     }
-    startQuiz('review', 'Revanche sur mes erreurs', shuffle(selected));
+    startQuiz('review', 'Revanche sur mes erreurs', shuffle(selected).slice(0, categoryQuizSize));
   }
 
   function startQuiz(mode, title, queue) {
@@ -669,6 +686,7 @@
     if (action === 'open-coach') renderCoach();
     if (action === 'open-lesson') renderCoachLesson(button.dataset.category);
     if (action === 'start-adaptive') startAdaptiveDrill();
+    if (action === 'start-bank') startBankDrill();
     if (action === 'practice-lesson') practiceLesson(button.dataset.category);
     if (action === 'start-category') startCategory(button.dataset.category);
     if (action === 'select-answer') selectAnswer(Number(button.dataset.answer));

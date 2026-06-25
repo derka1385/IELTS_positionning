@@ -15,34 +15,34 @@ window.GRAMMAR_KNOWN_PROFILE = {
 window.GRAMMAR_COACH_LESSONS = {
   'sentence-parts': {
     eyebrow: 'Priorité absolue · 12 min',
-    title: 'Voir le squelette d’une phrase',
-    promise: 'Si tu repères le verbe, tu peux reconstruire presque toute la phrase autour de lui.',
-    memory: 'VERBE → QUI ? → QUOI ? → À QUI ?',
+    title: 'Faire une phrase complète sous pression',
+    promise: 'On oublie les étiquettes scolaires. Le but IELTS : repérer vite une phrase cassée, mal ordonnée ou mal accordée.',
+    memory: 'VERBE CONJUGUÉ + IDÉE COMPLÈTE = PHRASE',
     concepts: [
       {
-        label: 'Réflexe 01', title: 'Commence toujours par le verbe',
-        rule: 'Le verbe conjugué porte le temps. Tout ce qui fait l’action ou possède cet état forme le sujet.',
-        wrong: 'A sharp decline in exports / sujet = exports',
-        correct: 'A sharp decline in exports / sujet = decline',
-        why: 'Le noyau est “decline”. “In exports” précise seulement de quelle baisse on parle.'
+        label: 'Réflexe 01', title: 'Une phrase a besoin d’un verbe conjugué',
+        rule: 'Un groupe en -ing seul ne suffit pas toujours. Cherche le verbe qui porte vraiment le temps.',
+        wrong: 'The rise in housing costs affecting young workers.',
+        correct: 'The rise in housing costs is affecting young workers.',
+        why: '“Affecting” seul laisse la phrase suspendue. “Is affecting” crée une vraie phrase.'
       },
       {
-        label: 'Réflexe 02', title: 'Objet direct = quoi ? ou qui ?',
-        rule: 'Pose la question juste après le verbe, sans préposition. La réponse est l’objet direct.',
-        wrong: 'The policy affects / quoi ? → aucune idée',
-        correct: 'The policy affects / quoi ? → small businesses',
-        why: '“Small businesses” reçoit directement l’action de “affects”.'
+        label: 'Réflexe 02', title: 'Because / although / while ne finissent pas seuls',
+        rule: 'Ces mots ouvrent une idée dépendante. Il faut ensuite une idée principale pour fermer la phrase.',
+        wrong: 'Although the survey was limited.',
+        correct: 'Although the survey was limited, the results were useful.',
+        why: '“Although” annonce un contraste ; la deuxième partie donne ce contraste.'
       },
       {
-        label: 'Réflexe 03', title: 'Objet indirect = destinataire',
-        rule: 'Quand quelque chose est donné, montré ou envoyé, cherche qui le reçoit.',
-        wrong: 'The tutor gave useful feedback. → objet indirect = feedback',
-        correct: 'The tutor gave the candidates useful feedback. → objet indirect = candidates',
-        why: 'Le feedback est la chose donnée ; les candidats sont les destinataires.'
+        label: 'Réflexe 03', title: 'Le petit groupe “of…” ne décide pas toujours l’accord',
+        rule: 'Dans “the impact of these measures”, le mot principal est “impact”, pas “measures”.',
+        wrong: 'The impact of these measures are unclear.',
+        correct: 'The impact of these measures is unclear.',
+        why: 'Le groupe “of these measures” ajoute une précision, mais ne rend pas “impact” pluriel.'
       }
     ],
-    checklist: ['Entoure le verbe conjugué', 'Demande qui fait l’action', 'Demande quoi, puis à qui'],
-    examTip: 'En Writing, ce réflexe évite surtout les accords faux et les phrases sans sujet.'
+    checklist: ['Y a-t-il un verbe conjugué ?', 'Le mot de liaison exige-t-il une suite ?', 'Quel mot commande vraiment l’accord ?'],
+    examTip: 'En Writing, cette compétence sert surtout à éviter les fragments, les accords faux et les phrases qui s’effondrent avant le point.'
   },
   adverbs: {
     eyebrow: 'Priorité absolue · 12 min',
